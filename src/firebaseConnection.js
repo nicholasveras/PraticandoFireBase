@@ -12,9 +12,8 @@ let firebaseConfig = {
   measurementId: "G-FJX3GED5RD"
 };
 
-if(!firebase.apps.length){
-  // Abrir minha conexão
-  const app = initializeApp(firebaseConfig);
-}
 
-export default firebase;
+  // Abrir minha conexão
+  const app = initializedApp(firebaseConfig);
+
+
