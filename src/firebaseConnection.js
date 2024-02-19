@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import 'firebase/database';
 
-let firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyDx0-HLjc9iMY274DwyaG2CTNWupNdvSSA",
   authDomain: "meuapp-f15c8.firebaseapp.com",
   databaseURL: "https://meuapp-f15c8-default-rtdb.firebaseio.com",
@@ -12,8 +12,12 @@ let firebaseConfig = {
   measurementId: "G-FJX3GED5RD"
 };
 
-
+if(!firebase.apps.length) {
   // Abrir minha conexão
-  const app = initializedApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
+}
+
+export default firebase;
+  
 
 
