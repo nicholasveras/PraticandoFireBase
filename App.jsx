@@ -11,15 +11,26 @@ export default function App(){
   useEffect(() => {
 
     async function dados(){
-      // olheiro da nossa database
-      await firebase.database().ref('usuarios/1/nome').on('value', (snapshot) => {
-        setNome(snapshot.val().nome);
-        setIdade(snapshot.val().idade);
-      })
 
-      // await firebase.database().ref('nome').once('value', (snapshot) => {
+      // Criar um nó
+      // await firebase.database().ref('tipo').set('Cliente');
 
+      // Remover um nó 
+      // await firebase.database().ref('tipo').remove();
+      
+      // INSERT 
+      // await firebase.database().ref('usuarios').child(3).set({
+      //   nome: "Maria Eduarda Souza",
+      //   cargo: "Médica"
       // })
+
+      // UPDATE
+      // await firebase.database().ref('usuarios').child(3).
+      // update({
+      //   nome: 'Juninho Jorge'
+      // })
+
+      
     }
 
     dados();
