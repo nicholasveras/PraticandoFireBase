@@ -39,7 +39,17 @@ export default function App(){
 
   async function cadastrar(){
     if(nome !== '' & cargo !== ''){
-      let usuarios = await firebase.database().ref('usuarios')
+      let usuarios = await firebase.database().ref('usuarios');
+      let chave = usuarios.push().key;
+
+      usuarios.child(chave).set({
+        nome: nome,
+        cargo: cargo
+      });
+
+      alert('Cadastrado com sucesso!');
+      setCargo('');
+      setNome('');
     }
   }
 
@@ -50,6 +60,7 @@ export default function App(){
       style={styles.input}
       underlineColorAndroid="transparent"
       onChangeText={(texto) => setNome(texto)}
+      value={nome}
       />
 
       <Text style={styles.texto}>Cargo</Text>
@@ -57,6 +68,7 @@ export default function App(){
       style={styles.input}
       underlineColorAndroid="transparent"
       onChangeText={(texto) => setCargo(texto)}
+      value={cargo}
       />
 
       <Button
