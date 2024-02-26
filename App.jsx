@@ -1,34 +1,30 @@
 import React, {useState, useEffect} from "react";
-import { SafeAreaView, Text, StyleSheet, TextInput, Button } from "react-native";
+import { SafeAreaView, Text, StyleSheet, TextInput, Button, FlatList } from "react-native";
 import firebase from "./src/firebaseConnection";
+import Listagem from "./src/Listagem";
 
 console.disableYellowBox = true;
 
 export default function App(){
   const [nome, setNome] = useState('');
   const [cargo, setCargo] = useState('');
+  const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
 
     async function dados(){
 
-      // Criar um nó
-      // await firebase.database().ref('tipo').set('Cliente');
-
-      // Remover um nó 
-      // await firebase.database().ref('tipo').remove();
-      
-      // INSERT 
-      // await firebase.database().ref('usuarios').child(3).set({
-      //   nome: "Maria Eduarda Souza",
-      //   cargo: "Médica"
-      // })
-
-      // UPDATE
-      // await firebase.database().ref('usuarios').child(3).
-      // update({
-      //   nome: 'Juninho Jorge'
-      // })
+      await firebase.database().ref('usuarios').on('value', (snapshot)=> {
+        snapshot.forEach((childItem) => {
+          let data = {
+            key: childItem.key,
+            nome: childItem.val().nome,
+            cargo: childItem.val().cargo
+          };
+          
+          setUsuarios([...usuarios, data])
+        })
+      })
 
       
     }
@@ -74,6 +70,12 @@ export default function App(){
       <Button
       title="Novo funcionario"
       onPress={cadastrar}
+      />
+
+      <FlatList
+      keyExtractor={item => item.key}
+      data={usuarios}
+      renderItem={({item}) => ( <Listagem data={item} /> )}
       />
     </SafeAreaView>
   )
