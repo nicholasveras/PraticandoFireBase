@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { SafeAreaView, Text, StyleSheet, TextInput, Button, FlatList } from "react-native";
+import { SafeAreaView, Text, StyleSheet, TextInput, Button, FlatList, ActivityIndicator } from "react-native";
 import firebase from "./src/firebaseConnection";
 import Listagem from "./src/Listagem";
 
@@ -9,12 +9,15 @@ export default function App(){
   const [nome, setNome] = useState('');
   const [cargo, setCargo] = useState('');
   const [usuarios, setUsuarios] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
 
     async function dados(){
 
       await firebase.database().ref('usuarios').on('value', (snapshot)=> {
+        setUsuarios([]);
+
         snapshot.forEach((childItem) => {
           let data = {
             key: childItem.key,
@@ -22,8 +25,11 @@ export default function App(){
             cargo: childItem.val().cargo
           };
           
-          setUsuarios([...usuarios, data])
+          setUsuarios(oldArray => [...oldArray, data].reverse())
         })
+
+        setLoading(false);
+
       })
 
       
@@ -72,11 +78,19 @@ export default function App(){
       onPress={cadastrar}
       />
 
-      <FlatList
+      {loading ? (
+        <ActivityIndicator color='#121212' size={45}/>
+      ) : 
+      (
+        <FlatList
       keyExtractor={item => item.key}
       data={usuarios}
       renderItem={({item}) => ( <Listagem data={item} /> )}
       />
+      )
+      }
+
+      
     </SafeAreaView>
   )
 }
